@@ -27,25 +27,13 @@ class Cronometro {
                 timeMillis += System.currentTimeMillis() - lastTimestamp
                 lastTimestamp = System.currentTimeMillis()
                 formattedTime = formatTime(timeMillis)
-            }
-        }
-    }
 
-    fun startCountdown(initialTimeMillis: Long) {
-        if(isRunning) return
-
-        coroutineScope.launch {
-            timeMillis = initialTimeMillis
-            lastTimestamp = System.currentTimeMillis()
-            isRunning = true
-            while(isRunning && timeMillis > 0) {
-                delay(10L)
-                val elapsed = System.currentTimeMillis() - lastTimestamp
-                timeMillis = maxOf(0, timeMillis - elapsed)
-                lastTimestamp = System.currentTimeMillis()
-                formattedTime = formatTime(timeMillis)
+                if (timeMillis >= 59 * 60 * 1000 + 59 * 1000 + 999) {
+                    isRunning = false
+                    timeMillis = 59L * 60 * 1000 + 59 * 1000 + 999
+                    formattedTime = formatTime(timeMillis)
+                }
             }
-            isRunning = false
         }
     }
 
