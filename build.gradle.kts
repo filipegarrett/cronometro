@@ -25,7 +25,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
             packageName = "cronometro"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.3"
 
             windows {
                 iconFile.set(project.file("resources/icons/icon.ico"))
