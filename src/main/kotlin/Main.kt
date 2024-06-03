@@ -34,8 +34,8 @@ fun App() {
         ) {
             val cronometro = remember { Cronometro() }
             CronometroDisplay(
-                formattedTime = cronometro.formattedTime,
-                onStartClick = cronometro::start,
+                formattedTime = cronometro.tempoFormatado,
+                onStartClick = cronometro::iniciar,
                 onPauseClick = cronometro::pause,
                 onResetClick = cronometro::reset
             )

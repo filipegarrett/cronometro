@@ -10,47 +10,47 @@ import java.util.*
 
 class Cronometro {
 
-    var formattedTime by mutableStateOf("00:00:000")
+    var tempoFormatado by mutableStateOf("00:00:000")
     private var coroutineScope = CoroutineScope(Dispatchers.Default)
-    private var isRunning = false
+    private var emExecucao = false
     private var timeMillis = 0L
-    private var lastTimestamp = 0L
+    private var ultimoTimestamp = 0L
 
-    fun start() {
-        if(isRunning) return
+    fun iniciar() {
+        if(emExecucao) return
 
         coroutineScope.launch {
-            lastTimestamp = System.currentTimeMillis()
-            isRunning = true
-            while(isRunning) {
+            ultimoTimestamp = System.currentTimeMillis()
+            emExecucao = true
+            while(emExecucao) {
                 delay(10L)
-                timeMillis += System.currentTimeMillis() - lastTimestamp
-                lastTimestamp = System.currentTimeMillis()
-                formattedTime = formatTime(timeMillis)
+                timeMillis += System.currentTimeMillis() - ultimoTimestamp
+                ultimoTimestamp = System.currentTimeMillis()
+                tempoFormatado = formatarTempo(timeMillis)
 
                 if (timeMillis >= 59 * 60 * 1000 + 59 * 1000 + 999) {
-                    isRunning = false
+                    emExecucao = false
                     timeMillis = 59L * 60 * 1000 + 59 * 1000 + 999
-                    formattedTime = formatTime(timeMillis)
+                    tempoFormatado = formatarTempo(timeMillis)
                 }
             }
         }
     }
 
     fun pause() {
-        isRunning = false
+        emExecucao = false
     }
 
     fun reset() {
         coroutineScope.cancel()
         coroutineScope = CoroutineScope(Dispatchers.Default)
         timeMillis = 0L
-        lastTimestamp = 0L
-        formattedTime = "00:00:000"
-        isRunning = false
+        ultimoTimestamp = 0L
+        tempoFormatado = "00:00:000"
+        emExecucao = false
     }
 
-    private fun formatTime(timeMillis: Long): String {
+    private fun formatarTempo(timeMillis: Long): String {
         val localDateTime = LocalDateTime.ofInstant(
             Instant.ofEpochMilli(timeMillis),
             ZoneId.systemDefault()
